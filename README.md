@@ -8,6 +8,10 @@ It is **field-agnostic**: your research area, target regions, and preferred sour
 configured once in `knowledge-base/profile/profile.md`, and the same skills work whether
 you're applying in machine learning, molecular biology, or medieval history.
 
+可自动化博士申请过程中那些耗时且重复性的工作:包括查找招生机会、分析教授的研究方向、撰写联系邮件、针对不同项目定制申请材料，以及跟踪各项截止日期，同时确保你发送的所有内容都保持个人风格，真实且自然。
+
+你的研究方向、目标地区和偏好的信息来源只需在 `knowledge-base/profile/profile.md` 中配置一次，之后无论你申请的是机器学习、分子生物学，还是中世纪史，均可使用同一套技能完成整个申请流程。
+
 ## How it works
 
 The system is a set of focused **skills** that share a **knowledge base** of Markdown
