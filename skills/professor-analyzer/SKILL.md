@@ -61,6 +61,12 @@ fall back to **WebSearch** (always available) and the browser tools for Google S
 and note in the profile that structured-index enrichment was unavailable. Never fill the gap
 by guessing publications from memory; an invented paper in an outreach email is fatal.
 
+**Record where the evidence came from** in the `enrichment` front-matter field: `openalex` or
+`arxiv` if the helper returned works, `websearch` if you fell back to search, `none` if you
+could retrieve no real publication evidence at all (in which case say so plainly and treat the
+whole profile as provisional — a profile with `enrichment: none` should not seed a confident
+outreach email).
+
 Then gather, roughly in priority order:
 
 - **Recent publications (last ~3 years)** — from the helper / search above. For each, capture
@@ -77,19 +83,22 @@ If a source can't be fetched, note the gap rather than fabricating around it.
 
 ### Step 2a — Capture the contact / application rules (downstream skills depend on this)
 
-Actively look for how this professor wants to be approached, and record it in the profile's
-`## Notes`. This is not optional polish: **outreach-email** and **opportunity-ranker** rely on
-it, and getting it wrong wastes the applicant's one shot. Specifically check for and note:
+Actively look for how this professor wants to be approached. This is not optional polish:
+**outreach-email** and **opportunity-ranker** branch on it, and getting it wrong wastes the
+applicant's one shot. Record each rule in the **typed front-matter field** so downstream
+skills can parse it without reading prose, and add any nuance to `## Notes`:
 
-- Whether the professor says **not to email about admissions** (many top labs do) and instead
-  routes applicants to the **program application** — capture the routing ("apply to <program>
-  and name me").
-- Any required **subject-line convention** or contact protocol the page specifies.
-- Whether admission is **direct-to-advisor** vs. **program-committee / rotation** based.
-- Whether they explicitly state they **are / aren't taking students** for the relevant year.
+- **`email_policy`** — set `do-not-email-admissions` when the page/profile says not to email
+  about admissions (many top labs do) and routes applicants to the program; `welcomes-inquiry`
+  when brief intros are invited; `unknown` if the page is silent. In `## Notes`, capture the
+  routing it implies ("apply to <program> and name me") and any **subject-line convention**.
+- **`admission_model`** — `direct-to-advisor`, `program-committee`, `rotation`, or `unknown`.
+- **`accepting_students`** — `yes` / `no` / `unknown` for the applicant's target year; note the
+  year in `## Notes` if stated.
 
-When you find such a rule, surface it in your summary too — it changes whether outreach is
-even the right move.
+Set these to `unknown` rather than guessing when the source is silent — a wrong `welcomes-inquiry`
+is worse than an honest `unknown`. When you find a hard rule (e.g. do-not-email), surface it in
+your summary too: it changes whether outreach is even the right move.
 
 ## Step 3 — Assess fit
 
@@ -119,10 +128,12 @@ the downstream skills route them correctly.
 
 ## Step 5 — Write the file
 
-Write `knowledge-base/professors/<slug>.md` with all schema fields and a `## Sources`
-section linking everything you used. Then give the user a short summary: the fit verdict,
-the single strongest hook, and any gap they should be aware of. If you found a clear
-opening, suggest the natural next step (e.g. drafting outreach).
+Write `knowledge-base/professors/<slug>.md` with **all** schema front-matter fields filled
+(blank, not absent, when unknown) — including the typed `funding_signal`, `accepting_students`,
+`admission_model`, `email_policy`, and `enrichment` fields the downstream skills read — and a
+`## Sources` section with one link per claim-bearing source. Then give the user a short
+summary: the fit verdict, the single strongest hook, and any gap they should be aware of. If
+you found a clear opening, suggest the natural next step (e.g. drafting outreach).
 
 ## Guardrails
 

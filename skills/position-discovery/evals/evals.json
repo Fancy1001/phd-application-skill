@@ -1,0 +1,46 @@
+{
+  "skill_name": "position-discovery",
+  "fixture_kb": null,
+  "notes": "Grounding is live web search against real boards/labs; no fixture KB. The hard part is currency and honesty: drop expired/filled listings, stamp verified_on, never invent a deadline. Assertion kinds: file = a written opening record; chat = the assistant's reply; schema = output passes shared/schemas/validate_kb.py.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "funded-gnn-europe-currency",
+      "prompt": "Find me fully-funded PhD positions on graph neural networks or geometric deep learning in the UK or Europe, starting 2027. I need funding.",
+      "expected_output": "Several schema-conformant opening records in knowledge-base/openings/, each with funding set explicitly and verified_on stamped to today. Honors the funding requirement (excludes/flags self-funded), respects the 2027 start year (distinguishes 2026 from 2027 cycles), and flags any listing it could not verify rather than fabricating a deadline.",
+      "assertions": [
+        {"text": "Produces >=3 per-opening schema files in knowledge-base/openings/", "kind": "file"},
+        {"text": "Each opening file passes shared/schemas/validate_kb.py (funding/status/dates valid)", "kind": "schema"},
+        {"text": "Sets verified_on to today on each recorded opening", "kind": "file"},
+        {"text": "Honors the funding requirement: excludes or flags self-funded positions", "kind": "file"},
+        {"text": "Respects the 2027 start-year filter; does not pass off a 2026 cycle as 2027", "kind": "chat"},
+        {"text": "Flags unverified/expired listings or leaves unknown fields blank rather than fabricating", "kind": "chat"}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "topic-to-labs-us-recruiting",
+      "prompt": "I'm interested in mechanistic interpretability of large language models. Which US labs or professors are recruiting PhD students in this area? Find me some openings to target.",
+      "expected_output": "Identifies US labs with an explicit recruiting signal (treats 'this lab is plausibly recruiting' as a valid opening with funding: unknown and a note on the admission model), writes per-opening records each saying why it fits, and notes the US program-application route. No fabricated 'positions'.",
+      "assertions": [
+        {"text": "Produces >=3 per-opening schema files", "kind": "file"},
+        {"text": "Identifies labs with an explicit recruiting signal rather than inventing postings", "kind": "file"},
+        {"text": "Records funding: unknown and notes the US admission model for direct-to-advisor cases", "kind": "file"},
+        {"text": "Each opening states the concrete topical fit, not 'matches your interests'", "kind": "file"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "field-agnostic-expired-discipline",
+      "prompt": "I'm a molecular biology MSc looking for funded PhD positions on RNA therapeutics in Europe for a 2027 start. A lot of what I find online seems to be old calls — please only give me ones that are actually open.",
+      "expected_output": "Demonstrates field-agnosticism (life-sciences boards/sources, not arXiv) AND currency discipline: follows each hit to its primary page, drops calls whose deadline has passed or whose cycle is over, stamps verified_on on the survivors, and is explicit about how few genuinely-open 2027 listings exist this early rather than padding with stale ones.",
+      "assertions": [
+        {"text": "Uses life-sciences-appropriate sources (e.g. EURAXESS, FindAPhD, dept pages), not arXiv", "kind": "chat"},
+        {"text": "Drops or clearly flags expired / past-deadline listings instead of presenting them as open", "kind": "file"},
+        {"text": "Stamps verified_on on each recorded opening", "kind": "file"},
+        {"text": "Honest about scarcity of genuine 2027 listings rather than fabricating to hit a count", "kind": "chat"},
+        {"text": "Recorded openings pass validate_kb.py", "kind": "schema"}
+      ]
+    }
+  ]
+}

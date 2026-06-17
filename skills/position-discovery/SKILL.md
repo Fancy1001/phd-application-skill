@@ -57,13 +57,19 @@ than silently skipping it.
 **Verify before recording.** Follow each promising hit to its primary source (the lab or
 program page), confirm it's current (not a closed call from two years ago), and read enough
 to fill the schema honestly. A plausible-looking listing that turns out to be expired is
-worse than no listing.
+worse than no listing. Determine today's date with the shell, and when you confirm an opening
+is live, record that date in `verified_on` — it's the currency stamp the ranker and tracker
+use to tell a fresh opening from a stale one. Check the `deadline` and intended `start_year`
+against today: a passed deadline or a prior cycle means *don't record it as new* (or record it
+with a clear note that it's expired), rather than presenting it as actionable.
 
 ## Step 3 — Filter and de-duplicate
 
-Apply the applicant's hard constraints (funding required, region, start year, dealbreakers)
-as filters, not suggestions — an unfunded position for someone who needs funding is not a
-match. Drop anything that fails a dealbreaker.
+Apply the applicant's hard constraints as filters, not suggestions. Read the typed
+**`funding_required`** flag and `target_start` from the profile: if `funding_required: true`,
+drop `self-funded` openings (and flag `unknown`-funding ones for the applicant to verify) —
+an unfunded position for someone who needs funding is not a match. Drop anything that fails a
+dealbreaker, region, or start-year filter.
 
 Before writing, check existing files in `knowledge-base/openings/` so you don't create a
 duplicate. If an opening already exists, update it (e.g. a newly found deadline) rather
@@ -72,7 +78,9 @@ than making a second file.
 ## Step 4 — Write opening records
 
 For each surviving opening, write `knowledge-base/openings/<slug>.md` with all schema
-fields. Set `status: new`. In the body:
+fields. Set `status: new`, `verified_on` to today's date, `start_year` to the intake year,
+and `funding` to one of `fully funded | partial | self-funded | unknown` (use `self-funded`
+explicitly — never blur it into `partial`). In the body:
 
 - `## Description` — what the project/position actually is, in your words.
 - `## Requirements` — degree, skills, tests, eligibility (note visa/nationality limits).

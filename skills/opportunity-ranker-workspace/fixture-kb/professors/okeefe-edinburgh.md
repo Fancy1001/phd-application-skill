@@ -8,6 +8,9 @@ field: machine learning
 fit_score: 80
 funding_signal: strong
 accepting_students: yes
+admission_model: direct-to-advisor
+email_policy: welcomes-inquiry
+enrichment:
 ---
 ## Fit with my profile
 Strong overlap on sim-to-real and manipulation. Advertised fully-funded studentship with a

@@ -27,17 +27,25 @@ schedule a follow-up reminder, but the applicant owns the send.
 
 ## Step 1 — Load the people
 
-Read the professor's profile at `knowledge-base/professors/<slug>.md` — especially the
-**Outreach hooks**, **Research agenda**, and any **Notes** (e.g. "do not email about
-admissions", preferred subject lines, application routing). Read the applicant's
+Read the professor's profile at `knowledge-base/professors/<slug>.md`. Check the typed
+front-matter fields first — they're the contract: **`email_policy`** (is a cold admissions
+email even welcome?), **`admission_model`** (does the professor or a committee decide?), and
+**`accepting_students`**. Then read the **Outreach hooks**, **Research agenda**, and **Notes**
+(subject conventions, application routing) for the substance. Read the applicant's
 `knowledge-base/profile/profile.md` and skim `profile/cv-master.md` for the one or two
 credentials most relevant to *this* professor.
 
 If no professor profile exists, run **professor-analyzer** first — an email written without
-it will be generic, which defeats the purpose. If the profile's Notes say the professor
-doesn't take cold admissions emails, surface that to the applicant before drafting: the
-right move may be a program application that names them, or a narrow, substantive research
-question rather than a "please take me" pitch.
+it will be generic, which defeats the purpose. **Before drafting, honor the contact rules:**
+
+- `email_policy: do-not-email-admissions` (or Notes saying so) → don't produce a cold
+  "please take me" email. Surface it: the right move is a program application that names them,
+  or a narrow, substantive research question. Hand the hooks to **application-materials** for
+  the SOP instead.
+- `admission_model: program-committee` / `rotation` → outreach is low-leverage; say so and
+  steer effort to the application unless the applicant has a specific research reason to write.
+- If `email_policy` is blank, fall back to the `## Notes` prose, then default to a careful
+  cold email only when nothing says otherwise.
 
 ## Step 2 — Cold email vs. follow-up
 

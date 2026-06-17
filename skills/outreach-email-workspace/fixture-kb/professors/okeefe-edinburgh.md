@@ -8,6 +8,9 @@ field: machine learning
 fit_score: 80
 funding_signal: strong
 accepting_students: yes
+admission_model: direct-to-advisor
+email_policy: welcomes-inquiry
+enrichment:
 ---
 ## Research agenda & open problems
 Sim-to-real transfer for dexterous manipulation; tactile-informed policies.

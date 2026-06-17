@@ -8,6 +8,9 @@ field: machine learning
 fit_score: 88
 funding_signal: strong
 accepting_students: unknown
+admission_model: program-committee
+email_policy: do-not-email-admissions
+enrichment:
 ---
 ## Fit with my profile
 Near-perfect topical overlap (RL, robotics, real-world learning). Applicant's sim-to-real

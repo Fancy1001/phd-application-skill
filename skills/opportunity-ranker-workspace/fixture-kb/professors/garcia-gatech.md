@@ -8,6 +8,9 @@ field: robotics
 fit_score: 78
 funding_signal: strong
 accepting_students: yes
+admission_model: unknown
+email_policy: unknown
+enrichment:
 ---
 ## Fit with my profile
 Good overlap: robot learning and sample-efficient RL on real hardware. Funded RA positions

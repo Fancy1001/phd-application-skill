@@ -4,6 +4,7 @@ field: machine learning
 subfields: [reinforcement learning, robotics, sim-to-real]
 degree_seeking: PhD
 target_start: 2027
+funding_required: true
 constraints: [must be fully funded]
 ---
 ## Research interests

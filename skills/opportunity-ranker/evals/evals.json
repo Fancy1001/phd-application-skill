@@ -1,0 +1,33 @@
+{
+  "skill_name": "opportunity-ranker",
+  "fixture_kb": "skills/opportunity-ranker-workspace/fixture-kb",
+  "notes": "Runs against the fixture KB. Profile has funding_required: true. Candidates include a strong-fit Levine (selective, do-not-email, funding unknown), funded Garcia/O'Keefe, a weak-fit Chen, and a strong-fit-but-self-funded Pike that must be dropped. Assertion kinds: file/chat/schema as in the other eval sets.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "rank-with-funding-dealbreaker",
+      "prompt": "Rank my PhD options and tell me where to focus. Everything is already in my knowledge base.",
+      "expected_output": "A ranked shortlist in knowledge-base/openings/_ranking.md that applies funding_required as a HARD filter (drops the self-funded Pike option even though its fit is high), does not simply sort by fit_score (a funded option outranks higher-fit-but-unfunded Levine), flags Levine as a selective reach, gives per-item rationale, and ends with a portfolio-balance note.",
+      "assertions": [
+        {"text": "Writes knowledge-base/openings/_ranking.md with a ranked table and per-item rationale", "kind": "file"},
+        {"text": "Drops the self-funded Pike opening as a dealbreaker (not merely ranks it low) and says why", "kind": "chat"},
+        {"text": "Does NOT just sort by fit_score (a funded option is placed above higher-fit unfunded Levine)", "kind": "file"},
+        {"text": "Flags Levine as a selective reach / gives sober admission realism", "kind": "chat"},
+        {"text": "Reuses typed signals (fit_score, funding, admission_model) rather than re-deriving them", "kind": "file"},
+        {"text": "Includes a portfolio-balance note (reaches vs. realistic targets)", "kind": "file"}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "needs-analysis-missing-data",
+      "prompt": "Add Professor Anika Bose at MIT to the comparison and rank her against my current shortlist — she works on tactile sensing for manipulation.",
+      "expected_output": "Bose has no professor profile in the knowledge base. The ranker must not invent a fit_score or funding signal for her. It should mark her 'needs analysis', either rank provisionally with explicit low confidence or recommend running professor-analyzer first, and rank the rest normally.",
+      "assertions": [
+        {"text": "Marks the un-analyzed professor as 'needs analysis' instead of inventing scores", "kind": "chat"},
+        {"text": "Recommends running professor-analyzer for the missing candidate", "kind": "chat"},
+        {"text": "Still produces an honest ranking of the candidates that DO have profiles", "kind": "file"},
+        {"text": "_ranking.md remains schema-faithful and does not assert guessed numbers as grounded", "kind": "file"}
+      ]
+    }
+  ]
+}

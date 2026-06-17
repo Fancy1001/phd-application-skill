@@ -144,11 +144,13 @@ both against objective assertions, and review the actual outputs.
   **fixture knowledge bases** with applications at varied stages.
 - **Assertions**: objective, programmatically checked where possible (schema conformance,
   presence of required sections, honest fit scores, no fabrication, correct prioritization).
-- **Review**: a static HTML viewer per skill (in `outputs/`) with an Outputs tab to read each
-  generated artifact and a Benchmark tab for the quantitative comparison.
+- **Review**: every artifact is persisted under `skills/<skill>-workspace/` — `benchmark.json`
+  / `benchmark.md` (the quantitative comparison), per-eval `grading.json` (assertion-level
+  pass/fail), the generated `outputs/`, and `timing.json`. The benchmark summaries are
+  *derived* from the per-run grading/timing files by `tools/build_benchmark.py` (so they can't
+  drift from the raw results) and validated by `tools/test_build_benchmark.py`.
 
-All artifacts are saved under `skills/<skill>-workspace/` — benchmarks, per-eval grading,
-the generated outputs, and timing — and persist in the repository.
+All of these persist in the repository for inspection.
 
 ---
 
@@ -211,9 +213,12 @@ guardrail surfacing — rather than prose quality.
   regex looked for the literal word "why" while the SOP expressed why-this-lab differently.
   It was corrected to check the reasoning rather than the keyword.
 
-- **Single-run benchmarks.** Each configuration was run once per test case (stddev 0). This
-  is enough to validate behavior and direction but not to measure run-to-run variance;
-  repeated runs would tighten the estimates.
+- **Single-run benchmarks.** Each configuration was run **once per test case**, so the ± in
+  the benchmark summaries is the spread *across the distinct eval cases*, not run-to-run
+  variance (which is unmeasured). This is enough to validate behavior and direction; repeated
+  runs per case would let us estimate variance. The `runs_per_configuration` field is `1`
+  accordingly, and per-run token counts come from each run's own `timing.json`; tool-call
+  counts were not captured by the harness and are recorded as `null` rather than `0`.
 
 - **Live-search dependence.** Discovery and analysis quality depends on what the web surfaces
   at run time and on which connectors (arXiv, Scholar, PubMed, position boards) are
@@ -298,10 +303,11 @@ phd-application-skill/
 │   ├── <skill>/SKILL.md       the nine skills
 │   └── <skill>-workspace/     saved eval artifacts (benchmarks, grading, outputs, timing)
 ├── knowledge-base/            applicant data (profile templates + entity folders)
+├── tools/                     build_benchmark.py (+ test) — derives honest benchmark summaries
 └── shared/
-    ├── schemas/README.md      knowledge-base field definitions
-    └── references/            data-sources.md, ethics.md
+    ├── schemas/               README.md (field definitions) + validate_kb.py (+ test)
+    └── references/            data-sources.md, connectors.md, ethics.md
 ```
 
-Review viewers (one HTML per skill, with Outputs + Benchmark tabs) are in the session
-`outputs/` folder.
+Per-skill benchmarks and generated outputs are persisted under each
+`skills/<skill>-workspace/` directory.

@@ -1,0 +1,45 @@
+{
+  "skill_name": "outreach-email",
+  "fixture_kb": "skills/outreach-email-workspace/fixture-kb",
+  "notes": "Runs against the fixture KB (Levine: email_policy do-not-email-admissions; O'Keefe: welcomes-inquiry). Assertion kinds: file = a written knowledge-base file; chat = the assistant's reply; schema = output passes shared/schemas/validate_kb.py.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "cold-email-do-not-email-guardrail",
+      "prompt": "Write a cold email to Professor Sergey Levine at Berkeley about a PhD in his lab.",
+      "expected_output": "The profile's email_policy is do-not-email-admissions and admission_model is program-committee. The skill should surface that BEFORE drafting a naive 'please take me' email, and reframe toward the Berkeley EECS program application (naming him) or a narrow, substantive research question — grounded in a real hook (HiL-SERL / pi0.5).",
+      "assertions": [
+        {"text": "Reads email_policy=do-not-email-admissions and surfaces the constraint before drafting", "kind": "chat"},
+        {"text": "Reframes away from a naive cold pitch (program application / substantive research note)", "kind": "chat"},
+        {"text": "Any draft is grounded in a real hook from the profile (HiL-SERL / pi0.5), no fabricated interest", "kind": "chat"},
+        {"text": "Flags [brackets] for applicant-only specifics", "kind": "chat"},
+        {"text": "Does not claim to have sent anything (draft only)", "kind": "chat"},
+        {"text": "Logs the interaction to knowledge-base/interactions/ with a follow-up date", "kind": "file"}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "followup-no-reply",
+      "prompt": "Professor O'Keefe at Edinburgh hasn't replied to the email I sent about two weeks ago. Can you write a follow-up?",
+      "expected_output": "Detects prior contact in interactions/ and writes a follow-up (not a fresh cold email): references the prior note, adds a genuine new angle rather than just bumping, stays polite with a graceful exit, and updates the interaction log with the next follow-up date.",
+      "assertions": [
+        {"text": "Treats it as a follow-up (references the prior email / date) from the interaction log", "kind": "chat"},
+        {"text": "Adds value / a new angle rather than only bumping", "kind": "chat"},
+        {"text": "Polite, not pushy; respects that silence is an answer", "kind": "chat"},
+        {"text": "Does not claim to have sent it (draft only)", "kind": "chat"},
+        {"text": "Updates knowledge-base/interactions/okeefe-edinburgh.md with the next follow-up date", "kind": "file"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "missing-profile-no-fabrication",
+      "prompt": "Draft a cold email to Professor Aisha Rahman at the University of Toronto about a PhD in her vision-language navigation lab.",
+      "expected_output": "No professor profile exists for Rahman in the knowledge base. The skill must NOT invent papers or shared interests to fill the gap. It should say it needs a professor profile first and offer to run professor-analyzer (or ask for a source), rather than producing a fabricated-but-fluent email.",
+      "assertions": [
+        {"text": "Recognizes there is no professor profile and does not fabricate her work to draft anyway", "kind": "chat"},
+        {"text": "Offers to run professor-analyzer first (or asks for a faculty/Scholar link)", "kind": "chat"},
+        {"text": "Does not write interactions/ log for an email it could not ground", "kind": "file"}
+      ]
+    }
+  ]
+}

@@ -8,6 +8,9 @@ field: machine learning
 fit_score: 45
 funding_signal: unknown
 accepting_students: yes
+admission_model: unknown
+email_policy: unknown
+enrichment:
 ---
 ## Fit with my profile
 Primarily NLP / language models; only tangential robotics connection via instruction

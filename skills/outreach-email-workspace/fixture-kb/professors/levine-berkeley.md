@@ -8,6 +8,9 @@ field: machine learning
 fit_score: 88
 funding_signal: strong
 accepting_students: unknown
+admission_model: program-committee
+email_policy: do-not-email-admissions
+enrichment:
 ---
 ## Research agenda & open problems
 Real-world RL, generalist robot policies / vision-language-action models, sample-efficient

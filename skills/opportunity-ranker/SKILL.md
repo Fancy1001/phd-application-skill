@@ -28,10 +28,12 @@ the applicant sees *why* each opportunity sits where it does, not just an opaque
 ## Step 1 — Gather what you're ranking
 
 Read `knowledge-base/profile/profile.md` (the applicant's interests, goals, constraints,
-and crucially their dealbreakers), then the candidates: `knowledge-base/professors/*.md`
-and `knowledge-base/openings/*.md`. Each professor profile already carries a `fit_score`,
-funding and accepting-students signals, and an agenda from **professor-analyzer** — reuse
-those rather than re-deriving them.
+and crucially their dealbreakers — including the typed **`funding_required`** flag and
+`target_start` year), then the candidates: `knowledge-base/professors/*.md` and
+`knowledge-base/openings/*.md`. Reuse the typed signals professor-analyzer and
+position-discovery already wrote rather than re-deriving them: the professor's `fit_score`,
+`funding_signal`, `accepting_students`, `admission_model`, and `email_policy`; the opening's
+`funding`, `deadline`, `start_year`, and `verified_on`.
 
 If a candidate the user wants ranked has no profile yet, note it as "needs analysis" and
 either rank it provisionally with low confidence or suggest running professor-analyzer
@@ -40,9 +42,15 @@ worse than an honest "I can't rank this well yet".
 
 ## Step 2 — Score each opportunity
 
-Score on these dimensions. They're weighted because they matter unequally, but the weights
-are defaults you should adapt to what the applicant's profile says they care about (e.g. if
-funding is a stated dealbreaker, an unfunded option drops out regardless of fit).
+**First apply hard filters, then score what survives.** A dealbreaker removes a candidate
+before scoring — it isn't a low score, it's out. In particular: if `funding_required: true`,
+drop openings with `funding: self-funded` (and treat `unknown` funding as a flagged risk, not
+a pass). Also flag — don't silently rank — any opening whose `deadline` has passed or whose
+`verified_on`/`start_year` shows it's from a stale cycle; recommend re-verifying rather than
+applying. Note each dropped candidate and why, so the applicant can override.
+
+Score the survivors on these dimensions. They're weighted because they matter unequally, but
+the weights are defaults you should adapt to what the applicant's profile says they care about.
 
 | Dimension | Default weight | What it measures |
 |---|---|---|

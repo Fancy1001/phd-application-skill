@@ -1,15 +1,16 @@
 {
   "metadata": {
     "skill_name": "position-discovery",
-    "skill_path": "<path/to/skill>",
-    "executor_model": "<model-name>",
-    "analyzer_model": "<model-name>",
+    "skill_path": "skills/position-discovery",
+    "executor_model": "unrecorded",
+    "analyzer_model": "unrecorded",
     "timestamp": "2026-06-13T02:45:35Z",
     "evals_run": [
       0,
       1
     ],
-    "runs_per_configuration": 3
+    "runs_per_configuration": 1,
+    "note": "Summary mean/stddev is the spread across the 2 distinct eval cases, 1 run each. tokens are backfilled from each run's timing; tool_calls were not captured by the harness."
   },
   "runs": [
     {
@@ -22,8 +23,8 @@
         "failed": 0,
         "total": 6,
         "time_seconds": 215.9,
-        "tokens": 0,
-        "tool_calls": 0,
+        "tokens": 55203,
+        "tool_calls": null,
         "errors": 0
       },
       "expectations": [
@@ -31,6 +32,54 @@
           "text": "Produces structured per-opening records (>=3 schema files)",
           "passed": true,
           "evidence": "found"
+        },
+        {
+          "text": "Surfaces multiple distinct openings (>=3)",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "Each opening states why it fits the applicant's topic",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "Honesty: flags unverified/expired listings or blank-unknown fields rather than fabricating",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "Honors the funding requirement (excludes/flag self-funded)",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "Respects 2027 start-year filter (distinguishes 2026 vs 2027)",
+          "passed": true,
+          "evidence": "found"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8333,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 183.0,
+        "tokens": 59153,
+        "tool_calls": null,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Produces structured per-opening records (>=3 schema files)",
+          "passed": false,
+          "evidence": "missing"
         },
         {
           "text": "Surfaces multiple distinct openings (>=3)",
@@ -70,8 +119,8 @@
         "failed": 0,
         "total": 6,
         "time_seconds": 165.1,
-        "tokens": 0,
-        "tool_calls": 0,
+        "tokens": 58074,
+        "tool_calls": null,
         "errors": 0
       },
       "expectations": [
@@ -109,54 +158,6 @@
       "notes": []
     },
     {
-      "eval_id": 0,
-      "configuration": "without_skill",
-      "run_number": 1,
-      "result": {
-        "pass_rate": 0.8333,
-        "passed": 5,
-        "failed": 1,
-        "total": 6,
-        "time_seconds": 183.0,
-        "tokens": 0,
-        "tool_calls": 0,
-        "errors": 0
-      },
-      "expectations": [
-        {
-          "text": "Produces structured per-opening records (>=3 schema files)",
-          "passed": false,
-          "evidence": "missing"
-        },
-        {
-          "text": "Surfaces multiple distinct openings (>=3)",
-          "passed": true,
-          "evidence": "found"
-        },
-        {
-          "text": "Each opening states why it fits the applicant's topic",
-          "passed": true,
-          "evidence": "found"
-        },
-        {
-          "text": "Honesty: flags unverified/expired listings or blank-unknown fields rather than fabricating",
-          "passed": true,
-          "evidence": "found"
-        },
-        {
-          "text": "Honors the funding requirement (excludes/flag self-funded)",
-          "passed": true,
-          "evidence": "found"
-        },
-        {
-          "text": "Respects 2027 start-year filter (distinguishes 2026 vs 2027)",
-          "passed": true,
-          "evidence": "found"
-        }
-      ],
-      "notes": []
-    },
-    {
       "eval_id": 1,
       "configuration": "without_skill",
       "run_number": 1,
@@ -166,8 +167,8 @@
         "failed": 1,
         "total": 6,
         "time_seconds": 133.5,
-        "tokens": 0,
-        "tool_calls": 0,
+        "tokens": 43780,
+        "tool_calls": null,
         "errors": 0
       },
       "expectations": [
@@ -220,10 +221,10 @@
         "max": 215.9
       },
       "tokens": {
-        "mean": 0.0,
-        "stddev": 0.0,
-        "min": 0,
-        "max": 0
+        "mean": 56638.5,
+        "stddev": 2030.1036,
+        "min": 55203,
+        "max": 58074
       }
     },
     "without_skill": {
@@ -240,16 +241,16 @@
         "max": 183.0
       },
       "tokens": {
-        "mean": 0.0,
-        "stddev": 0.0,
-        "min": 0,
-        "max": 0
+        "mean": 51466.5,
+        "stddev": 10870.3525,
+        "min": 43780,
+        "max": 59153
       }
     },
     "delta": {
       "pass_rate": "+0.17",
       "time_seconds": "+32.2",
-      "tokens": "+0"
+      "tokens": "+5172"
     }
   },
   "notes": []

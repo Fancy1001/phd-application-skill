@@ -1,26 +1,60 @@
 {
   "skill_name": "professor-analyzer",
+  "fixture_kb": null,
+  "notes": "Grounding is live web search against real professors; no fixture KB. Assertion kinds: file = a written knowledge-base file; chat = the assistant's reply; schema = output passes shared/schemas/validate_kb.py.",
   "evals": [
     {
       "id": 0,
       "name": "strong-fit-rl-robotics",
       "prompt": "I'm finishing a master's in computer science and my research is on reinforcement learning for robotics — mostly sim-to-real transfer, and I have one workshop paper on domain randomization. I'm applying for PhDs starting in 2027. Can you do a deep dive on Professor Sergey Levine at UC Berkeley and tell me whether he'd be a good PhD fit for me? If he's a fit, I'd want to know what to mention if I email him.",
-      "expected_output": "A structured professor profile written to knowledge-base/professors/ covering recent publications (with takeaways), research agenda/open problems, funding/lab signals, a justified fit assessment with a numeric score, and 2-4 concrete outreach hooks grounded in his real recent work. Should be strong fit, well-evidenced, with real citations.",
-      "files": []
+      "expected_output": "A structured professor profile in knowledge-base/professors/ with recent publications (with takeaways), agenda/open problems, funding/lab signals, a justified numeric fit score, and 2-4 concrete outreach hooks grounded in his real recent work. Strong, well-evidenced fit with real citations.",
+      "assertions": [
+        {"text": "Writes knowledge-base/professors/<slug>.md with all schema front-matter fields filled (blank not absent)", "kind": "file"},
+        {"text": "Output file passes shared/schemas/validate_kb.py with no errors", "kind": "schema"},
+        {"text": "fit_score is high (>=70) and justified by named overlaps, not asserted", "kind": "file"},
+        {"text": "Has ## Recent publications, ## Fit with my profile, ## Outreach hooks, ## Sources sections", "kind": "file"},
+        {"text": "enrichment field records provenance (openalex/arxiv/websearch/none)", "kind": "file"},
+        {"text": "Chat reply gives the fit verdict, the strongest hook, and any gap", "kind": "chat"},
+        {"text": "No fabricated papers; flags any unavailable enrichment honestly", "kind": "chat"}
+      ]
     },
     {
       "id": 1,
-      "name": "cross-field-biochem",
+      "name": "field-agnostic-biochem",
       "prompt": "Look into Professor Jennifer Doudna's lab at UC Berkeley for a PhD. My background is biochemistry — I did two years of undergrad research on lipid nanoparticle delivery of CRISPR components and I'm interested in gene-editing therapeutics. Is this a good lab for me and what would I want to highlight in outreach?",
-      "expected_output": "A structured profile for a life-sciences PI, demonstrating the skill is field-agnostic (uses bio-appropriate sources, not just arXiv). Recent work with takeaways, agenda, fit assessment vs. the applicant's CRISPR-delivery background, concrete hooks. Real publications cited.",
-      "files": []
+      "expected_output": "A structured profile for a life-sciences PI demonstrating the skill is field-agnostic (bio-appropriate sources, not just arXiv). Recent work with takeaways, agenda, fit vs. the applicant's CRISPR-delivery background, concrete hooks, real publications.",
+      "assertions": [
+        {"text": "Writes a schema-conformant professor file (passes validate_kb.py)", "kind": "schema"},
+        {"text": "Grounds in life-sciences sources (PubMed/Europe PMC/OpenAlex), not just arXiv", "kind": "file"},
+        {"text": "Fit assessment names the CRISPR-delivery overlap specifically", "kind": "file"},
+        {"text": "Outreach hooks reference real recent Doudna-lab work", "kind": "file"},
+        {"text": "Chat reply summarizes fit and the strongest hook", "kind": "chat"}
+      ]
     },
     {
       "id": 2,
       "name": "weak-fit-honesty",
       "prompt": "I want to do a PhD in natural language processing, specifically multilingual large language models and low-resource languages. Analyze Professor Fei-Fei Li at Stanford and tell me if she's a good supervisor for me.",
-      "expected_output": "An honest assessment that flags a fit GAP — Fei-Fei Li is primarily computer vision / spatial intelligence, not multilingual NLP. A good output should NOT force a strong match; it should give a low-to-moderate fit score, name the divergence specifically, and avoid fabricating NLP work. Tests intellectual honesty over flattery.",
-      "files": []
+      "expected_output": "An honest assessment that flags a fit GAP — Fei-Fei Li is primarily computer vision / spatial intelligence, not multilingual NLP. Low-to-moderate fit score, names the divergence specifically, does not fabricate NLP work.",
+      "assertions": [
+        {"text": "fit_score is low (<=40) and not forced upward", "kind": "file"},
+        {"text": "Names the computer-vision-vs-NLP divergence specifically", "kind": "file"},
+        {"text": "Does not invent NLP publications to manufacture overlap", "kind": "file"},
+        {"text": "Output file passes validate_kb.py", "kind": "schema"},
+        {"text": "Chat reply states the weak fit plainly rather than flattering", "kind": "chat"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "missing-profile-uses-request-background",
+      "prompt": "Analyze Professor Chelsea Finn at Stanford for a PhD. I work on meta-learning and few-shot adaptation for robot manipulation and have a first-author conference paper on MAML variants. (My profile file isn't set up yet.)",
+      "expected_output": "The skill should NOT stall asking for background it was already given. It uses the in-request background (meta-learning, few-shot robot manipulation, MAML paper) as the working profile, then produces a normal grounded profile and fit assessment.",
+      "assertions": [
+        {"text": "Does not block to ask for a profile that was already described in the request", "kind": "chat"},
+        {"text": "Fit assessment is computed against the in-request background (meta-learning / few-shot manipulation)", "kind": "file"},
+        {"text": "Writes a schema-conformant professor file (passes validate_kb.py)", "kind": "schema"},
+        {"text": "Suggests filling in profile.md as a next step", "kind": "chat"}
+      ]
     }
   ]
 }

@@ -121,7 +121,11 @@ knowledge-base/
 ```
 
 The exact field schemas live in `shared/schemas/` so every skill writes the same shape.
-See `shared/schemas/README.md`.
+See `shared/schemas/README.md`. Contact/application rules that downstream skills branch on —
+a professor's `email_policy` and `admission_model`, an opening's `funding` and `verified_on`
+currency stamp, the applicant's `funding_required` flag — are **typed front-matter fields**, not
+prose, so a reader parses them reliably (with prose as a fallback). Any knowledge base can be
+checked against the schemas with `python3 shared/schemas/validate_kb.py <kb-dir>`.
 
 ---
 

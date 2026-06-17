@@ -5,6 +5,7 @@ subfields: [reinforcement learning, robotics, sim-to-real]
 degree_seeking: PhD
 target_regions: [USA, UK, EU]
 target_start: 2027
+funding_required: true
 sources: [arXiv, FindAPhD, OpenReview]
 constraints: [must be fully funded]
 ---
