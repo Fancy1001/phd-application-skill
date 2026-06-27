@@ -8,7 +8,7 @@ description: >-
   the Smith lab", "make my resume fit this studentship", or "optimize my statement for this
   professor". Selects, reorders, and emphasizes true material from the applicant's master CV
   and profile to fit the target; never invents credentials. Writes tailored documents to
-  knowledge-base/applications/<id>/. Trigger whenever the intent is to prepare or adapt
+  knowledge-base/applications/[id]/. Trigger whenever the intent is to prepare or adapt
   CV/SOP/personal-statement material for a specific application.
 ---
 
